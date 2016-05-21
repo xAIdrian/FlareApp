@@ -16,5 +16,9 @@ public class MapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        mMapView = (MapView)findViewById(R.id.map);
+        mLocationLayer = new GraphicsLayer();
+        mMapView.addLayer(mLocationLayer);
     }
 }
