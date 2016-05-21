@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FlareApp</string>
+    <string name="show_map">Get me to the map</string>
 </resources>
