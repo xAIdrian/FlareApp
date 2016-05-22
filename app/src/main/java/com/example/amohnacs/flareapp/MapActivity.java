@@ -26,6 +26,7 @@ import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.LocationDisplayManager;
 import com.esri.android.map.MapView;
 import com.esri.android.map.ags.ArcGISFeatureLayer;
+import com.esri.android.map.event.OnSingleTapListener;
 import com.esri.android.map.event.OnStatusChangedListener;
 import com.esri.core.geometry.GeometryEngine;
 import com.esri.core.geometry.Point;
@@ -293,6 +294,16 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
             }
         });
 
+        mMapView.setOnSingleTapListener(new OnSingleTapListener() {
+            @Override
+            public void onSingleTap(float v, float v1) {
+
+                FlareDialog flareFrag = new FlareDialog();
+                flareFrag.show(getSupportFragmentManager(), "flareFrag");
+            }
+        });
+
+
         mImageButton = (ImageView) findViewById(R.id.flareButton);
         mImageButton.setOnTouchListener(new OnSwipeTouchListener(MapActivity.this) {
 
@@ -390,9 +401,9 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
             Graphic pointGraphic;
             Point tempPoint = new Point(flare.getLocation().longitude, flare.getLocation().latitude);
             Point pointGeometry = (Point) GeometryEngine.project(tempPoint, SpatialReference.create(4326), SpatialReference.create(3857));
-            if (flare.getCategory() == "Service") {
+            if (flare.getCategory().equals("Service")) {
                 pointGraphic = new Graphic(pointGeometry, mYellowPictureMarkerSymbol);
-            } else if (flare.getCategory() == "Emergency") {
+            } else if (flare.getCategory().equals("Emergency")) {
                 pointGraphic = new Graphic(pointGeometry, mRedPictureMarkerSymbol);
             } else {
                 pointGraphic = new Graphic(pointGeometry, mBluePictureMarkerSymbol);

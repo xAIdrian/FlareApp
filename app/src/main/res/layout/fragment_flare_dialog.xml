@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="com.example.amohnacs.flareapp.FlareDialog"
+    android:padding="8dp"
+    android:background="@drawable/dialog_background">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:padding="8dp"
+        android:text="James Young"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/imageImage"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_below="@id/titleText"
+        android:layout_centerHorizontal="true"
+        android:padding="8dp"
+        android:src="@drawable/ic_tow"/>
+
+    <TextView
+        android:id="@+id/towTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageImage"
+        android:layout_centerHorizontal="true"
+        android:padding="8dp"
+        android:text="Auto Tow Service"
+        android:textStyle="bold"
+        android:textColor="@color/secondaryText"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_below="@+id/towTitle"
+        android:layout_centerHorizontal="true"
+        android:text="Help Out!"/>
+
+
+</RelativeLayout>
