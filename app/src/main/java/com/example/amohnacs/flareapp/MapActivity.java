@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.LocationDisplayManager;
@@ -102,11 +101,10 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
                         @Override
                         public void onLocationChanged(Location location) {
                             mLocation = new Location("Actual Location");
-                            Log.d("SUNNY", "lat: " + location.getLatitude() + " long: " + location.getLongitude());
+                            Log.d("SUNNY-ACTUAL", "lat: " + location.getLatitude() + " long: " + location.getLongitude());
 
                             mLocation.setLongitude(location.getLongitude());
                             mLocation.setLatitude(location.getLatitude());
-
 
                             if (location != null) {
                                 Log.d("SUNNY", "lat: " + location.getLatitude() + " long: " + location.getLongitude());
@@ -144,36 +142,13 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
 
         mImageButton = (ImageButton) findViewById(R.id.flareButton);
         mImageButton.setOnTouchListener(new OnSwipeTouchListener(MapActivity.this) {
-
-            public void onSwipeBottom() {
-                Toast.makeText(MapActivity.this, "Down", Toast.LENGTH_SHORT).show();
-            }
-
-            public void onSwipeLeft() {
-                Toast.makeText(MapActivity.this, "Left", Toast.LENGTH_SHORT).show();
-            }
-
             public void onSwipeTop() {
-                Toast.makeText(MapActivity.this, mLocation.getLatitude() + " :UP", Toast.LENGTH_SHORT).show();
-
-                // create a point marker symbol (red, size 10, of type circle)
-                // SimpleMarkerSymbol simpleMarker = new SimpleMarkerSymbol(Color.RED, 50, SimpleMarkerSymbol.STYLE.CIRCLE);
-
-                // create a point at x=-302557, y=7570663 (for a map using meters as units; this depends
-                // on the spatial reference)
                 Point tempPoint = new Point(mLocation.getLongitude(), mLocation.getLatitude());
                 Point pointGeometry = (Point) GeometryEngine.project(tempPoint, SpatialReference.create(4326), SpatialReference.create(3857));
-                //Point pointGeometry = new Point(-302557, 7570663);
-
                 // create a graphic with the geometry and marker symbol
                 Graphic pointGraphic = new Graphic(pointGeometry, mPictureMarkerSymbol);
-
                 // add the graphic to the graphics layer
                 graphicsLayer.addGraphic(pointGraphic);
-            }
-
-            public void onSwipeRight() {
-                Toast.makeText(MapActivity.this, "Right", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -181,34 +156,29 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
         mFeatureLayer = new ArcGISFeatureLayer(Constants.mFeatureServiceURL, ArcGISFeatureLayer.MODE.ONDEMAND);
         mFeature = new FeatureLayerClass(mMapView);
 
-
-
-
-
         mFeature.getExistingPoints(this);
-
     }
 
     private void fireFlares() {
         Location location = getNearbyRandomLocation(
-                mLocation.getLatitude(), mLocation.getLatitude(), 25);
+                mLocation.getLongitude(), mLocation.getLatitude(), 25);
         mFeature.submitFlare(
-                new Flare("Tyler Durdern", new LatLng(location.getLatitude(), location.getLongitude()), "Social"));
+                new Flare("Tyler Durdern", new LatLng(location.getLongitude(), location.getLatitude()), "Social"));
 
         Location location1 = getNearbyRandomLocation(
-                mLocation.getLatitude(), mLocation.getLatitude(), 25);
+                mLocation.getLongitude(), mLocation.getLatitude(), 25);
         mFeature.submitFlare(
-                new Flare("Wade Winston Wilson", new LatLng(location1.getLatitude(), location1.getLongitude()), "Service"));
+                new Flare("Wade Winston Wilson", new LatLng(location1.getLongitude(), location1.getLatitude()), "Service"));
 
         Location location2 = getNearbyRandomLocation(
-                mLocation.getLatitude(), mLocation.getLatitude(), 25);
+                mLocation.getLongitude(), mLocation.getLatitude(), 25);
         mFeature.submitFlare(
-                new Flare("Dick Grayson", new LatLng(location2.getLatitude(), location2.getLongitude()), "Emergency"));
+                new Flare("Dick Grayson", new LatLng(location2.getLongitude(), location2.getLatitude()), "Emergency"));
 
         Location location3 = getNearbyRandomLocation(
-                mLocation.getLatitude(), mLocation.getLatitude(), 25);
+                mLocation.getLongitude(), mLocation.getLatitude(), 25);
         mFeature.submitFlare(
-                new Flare("James Howlett", new LatLng(location3.getLatitude(), location3.getLongitude()), "Service"));
+                new Flare("James Howlett", new LatLng(location3.getLongitude(), location3.getLatitude()), "Service"));
 
     }
 
@@ -243,7 +213,11 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
     public void setExistingFlares(List<Flare> flares) {
 
         for (Flare flare : flares) {
-            //todo: set Marker on map using flare.getLocation()
+            Log.d("SUNNY-Top", "long: " + flare.getLocation().longitude + " lat: " + flare.getLocation().latitude);
+            Point tempPoint = new Point(flare.getLocation().longitude, flare.getLocation().latitude);
+            Point pointGeometry = (Point) GeometryEngine.project(tempPoint, SpatialReference.create(4326), SpatialReference.create(3857));
+            Graphic pointGraphic = new Graphic(pointGeometry, mPictureMarkerSymbol);
+            graphicsLayer.addGraphic(pointGraphic);
         }
     }
 
