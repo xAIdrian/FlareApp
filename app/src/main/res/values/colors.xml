@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#0099FF</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorAccent">#FBC02D</color>
+
+    <color name="mainblue">#0099FF</color>
+    <color name="mainyellow">#FBC02D</color>
+    <color name="mainred">#D32F2F</color>
+
+
+   <!-- Main Blue - 0099FF
+    Light Blue - 7B2F9
+    Lightest Blue - B3E5FC
+    Main Yellow – FBC02D
+    Light Yellow – FFEB3B
+    Lightest Yellow – FFF9C4
+    Main Red – D32F2F
+    Light Red – F44336
+    Lightest Red – FFCDD2
+    Dark Grey – abb2b7
+    Light Grey – c5cdd2-->
 </resources>

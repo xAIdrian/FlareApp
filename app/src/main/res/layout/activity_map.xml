@@ -45,12 +45,61 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"></com.esri.android.map.MapView>
 
-                <ImageButton
+                <LinearLayout
+                    android:id="@+id/selectionLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:layout_alignParentBottom="true">
+
+                    <TextView
+                        android:id="@+id/socialTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/mainblue"
+                        android:gravity="center"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold"
+                        android:text="Social"
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:id="@+id/emergencyTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/mainred"
+                        android:gravity="center"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold"
+                        android:text="Emergency"
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:id="@+id/servicesTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/mainyellow"
+                        android:gravity="center"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold"
+                        android:text="Services"
+                        android:textColor="@android:color/white"/>
+
+                </LinearLayout>
+
+                <ImageView
                     android:id="@+id/flareButton"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="32dp"
+                    android:src="@drawable/blue_logo"
+                    android:visibility="invisible"/>
 
             </RelativeLayout>
         </android.support.constraint.ConstraintLayout>
