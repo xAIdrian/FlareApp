@@ -4,8 +4,15 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -17,11 +24,12 @@ import com.esri.android.map.event.OnStatusChangedListener;
 import com.esri.core.geometry.Point;
 import com.esri.core.map.Graphic;
 import com.esri.core.symbol.SimpleMarkerSymbol;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 import java.util.Random;
 
-public class MapActivity extends AppCompatActivity implements FeatureCallback{
+public class MapActivity extends AppCompatActivity implements FeatureCallback {
 
     private ArcGISFeatureLayer mFeatureLayer;
     private FeatureLayerClass mFeature;
@@ -31,11 +39,47 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback{
     public Location mLocation;
     public ImageButton mImageButton;
 
+    ActionBarDrawerToggle mActionToggle;
+    DrawerLayout mDrawerLayout;
+    NavigationView mNavigation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setHomeButtonEnabled(true);
+
+        mActionToggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+        );
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.activity_drawer_layout);
+        mNavigation = (NavigationView) findViewById(R.id.activity_drawer_navigation_view);
+        mActionToggle.setDrawerIndicatorEnabled(false);
+        mDrawerLayout.setDrawerListener(mActionToggle);
+
+
+        mActionToggle.setToolbarNavigationClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+
+            }
+        });
+
+        mNavigation.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        //Handle switching Fragments here
+                        mDrawerLayout.closeDrawers();
+                        return true;
+                    }
+                });
+
 
         mMapView = (MapView) findViewById(R.id.map);
         // Create GraphicsLayer
@@ -46,8 +90,8 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback{
         mMapView.setOnStatusChangedListener(new OnStatusChangedListener() {
             @Override
             public void onStatusChanged(Object o, STATUS status) {
-                if ((status == STATUS.INITIALIZED) && (o instanceof MapView )) {
-                    Log.d("SUNNY","Map initialization succeeded");
+                if ((status == STATUS.INITIALIZED) && (o instanceof MapView)) {
+                    Log.d("SUNNY", "Map initialization succeeded");
                     ldm = mMapView.getLocationDisplayManager();
                     ldm.setAutoPanMode(LocationDisplayManager.AutoPanMode.OFF);
                     ldm.setShowLocation(true);
@@ -61,11 +105,12 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback{
                             mLocation.setLatitude(location.getLatitude());
 
 
-                            if(location != null){
+                            if (location != null) {
                                 Log.d("SUNNY", "lat: " + location.getLatitude() + " long: " + location.getLongitude());
                                 ldm.setShowLocation(true);
                                 ldm.setAutoPanMode(LocationDisplayManager.AutoPanMode.LOCATION);
                                 Log.d("SUNNY", "Location found....");
+                                //fireFlares();
                             }
 
                         }
@@ -131,10 +176,38 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback{
         //initialization of our FeatureLayer and its associated class
         mFeatureLayer = new ArcGISFeatureLayer(Constants.mFeatureServiceURL, ArcGISFeatureLayer.MODE.ONDEMAND);
         mFeature = new FeatureLayerClass(mMapView);
+
+
+
+
+
         mFeature.getExistingPoints(this);
-        //mFeature.submitFlare(new Flare(new LatLng(200, 500), "UserOne", "Description", "Service"));
 
     }
+
+    private void fireFlares() {
+        Location location = getNearbyRandomLocation(
+                mLocation.getLatitude(), mLocation.getLatitude(), 25);
+        mFeature.submitFlare(
+                new Flare("Tyler Durdern", new LatLng(location.getLatitude(), location.getLongitude()), "Social"));
+
+        Location location1 = getNearbyRandomLocation(
+                mLocation.getLatitude(), mLocation.getLatitude(), 25);
+        mFeature.submitFlare(
+                new Flare("Wade Winston Wilson", new LatLng(location1.getLatitude(), location1.getLongitude()), "Service"));
+
+        Location location2 = getNearbyRandomLocation(
+                mLocation.getLatitude(), mLocation.getLatitude(), 25);
+        mFeature.submitFlare(
+                new Flare("Dick Grayson", new LatLng(location2.getLatitude(), location2.getLongitude()), "Emergency"));
+
+        Location location3 = getNearbyRandomLocation(
+                mLocation.getLatitude(), mLocation.getLatitude(), 25);
+        mFeature.submitFlare(
+                new Flare("James Howlett", new LatLng(location3.getLatitude(), location3.getLongitude()), "Service"));
+
+    }
+
     public static Location getNearbyRandomLocation(double x0, double y0, int radius) {
         Random random = new Random();
 
@@ -165,8 +238,9 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback{
     @Override
     public void setExistingFlares(List<Flare> flares) {
 
-        for(Flare flare : flares) {
+        for (Flare flare : flares) {
             //todo: set Marker on map using flare.getLocation()
         }
     }
+
 }
