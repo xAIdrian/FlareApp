@@ -92,7 +92,27 @@ public class MapActivity extends AppCompatActivity {
             }
         });
 
+        mImageButton = (ImageButton) findViewById(R.id.flareButton);
+        mImageButton.setOnTouchListener(new OnSwipeTouchListener(MapActivity.this) {
 
+            public void onSwipeBottom() {
+                Toast.makeText(MapActivity.this, "Down", Toast.LENGTH_SHORT).show();
+            }
+
+            public void onSwipeLeft() {
+                Toast.makeText(MapActivity.this, "Left", Toast.LENGTH_SHORT).show();
+            }
+
+            public void onSwipeTop() {
+                Toast.makeText(MapActivity.this, "Up", Toast.LENGTH_SHORT).show();
+
+
+            }
+
+            public void onSwipeRight() {
+                Toast.makeText(MapActivity.this, "Right", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
     public static Location getNearbyRandomLocation(double x0, double y0, int radius) {
