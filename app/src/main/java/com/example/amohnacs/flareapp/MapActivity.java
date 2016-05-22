@@ -1,6 +1,5 @@
 package com.example.amohnacs.flareapp;
 
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -10,9 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -21,9 +18,11 @@ import com.esri.android.map.LocationDisplayManager;
 import com.esri.android.map.MapView;
 import com.esri.android.map.ags.ArcGISFeatureLayer;
 import com.esri.android.map.event.OnStatusChangedListener;
+import com.esri.core.geometry.GeometryEngine;
 import com.esri.core.geometry.Point;
+import com.esri.core.geometry.SpatialReference;
 import com.esri.core.map.Graphic;
-import com.esri.core.symbol.SimpleMarkerSymbol;
+import com.esri.core.symbol.PictureMarkerSymbol;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -31,6 +30,7 @@ import java.util.Random;
 
 public class MapActivity extends AppCompatActivity implements FeatureCallback {
 
+    GraphicsLayer graphicsLayer;
     private ArcGISFeatureLayer mFeatureLayer;
     private FeatureLayerClass mFeature;
 
@@ -43,6 +43,7 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
     DrawerLayout mDrawerLayout;
     NavigationView mNavigation;
 
+    PictureMarkerSymbol mPictureMarkerSymbol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,8 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeButtonEnabled(true);
 
+
+        mPictureMarkerSymbol = new PictureMarkerSymbol(getResources().getDrawable(R.drawable.pin));
         mActionToggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         );
@@ -83,7 +86,7 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
 
         mMapView = (MapView) findViewById(R.id.map);
         // Create GraphicsLayer
-        final GraphicsLayer graphicsLayer = new GraphicsLayer();
+        graphicsLayer = new GraphicsLayer();
         // Add empty GraphicsLayer
         mMapView.addLayer(graphicsLayer);
 
@@ -151,18 +154,19 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
             }
 
             public void onSwipeTop() {
-                Toast.makeText(MapActivity.this, "Up", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapActivity.this, mLocation.getLatitude() + " :UP", Toast.LENGTH_SHORT).show();
 
                 // create a point marker symbol (red, size 10, of type circle)
-                SimpleMarkerSymbol simpleMarker = new SimpleMarkerSymbol(Color.RED, 10, SimpleMarkerSymbol.STYLE.CIRCLE);
+                // SimpleMarkerSymbol simpleMarker = new SimpleMarkerSymbol(Color.RED, 50, SimpleMarkerSymbol.STYLE.CIRCLE);
 
                 // create a point at x=-302557, y=7570663 (for a map using meters as units; this depends
                 // on the spatial reference)
-                //Point pointGeometry = new Point(mLocation.getLatitude(), mLocation.getLongitude());
-                Point pointGeometry = new Point(-302557, 7570663);
+                Point tempPoint = new Point(mLocation.getLongitude(), mLocation.getLatitude());
+                Point pointGeometry = (Point) GeometryEngine.project(tempPoint, SpatialReference.create(4326), SpatialReference.create(3857));
+                //Point pointGeometry = new Point(-302557, 7570663);
 
                 // create a graphic with the geometry and marker symbol
-                Graphic pointGraphic = new Graphic(pointGeometry, simpleMarker);
+                Graphic pointGraphic = new Graphic(pointGeometry, mPictureMarkerSymbol);
 
                 // add the graphic to the graphics layer
                 graphicsLayer.addGraphic(pointGraphic);
