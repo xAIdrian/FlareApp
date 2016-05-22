@@ -1,44 +1,46 @@
 package com.example.amohnacs.flareapp;
 
-import android.location.Location;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
- * Created by sunny on 5/21/16.
+ * Created by amohnacs on 5/21/16.
  */
+public class Flare {
 
-public class flare {
-    private String mUsername;
-    private String mCategory;
-    private Location mLocation;
+    private String userName;
+    private LatLng location;
+    private String category;
 
-    public flare(String username, String category, Location location){
-
-        mUsername = username;
-        mCategory = category;
-        mLocation = location;
+    public Flare() {
     }
 
-    public String getUsername() {
-        return mUsername;
+    public Flare(String userName, LatLng location, String category) {
+        this.userName = userName;
+        this.location = location;
+        this.category = category;
     }
 
-    public void setUsername(String username) {
-        mUsername = username;
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public LatLng getLocation() {
+        return location;
+    }
+
+    public void setLocation(LatLng location) {
+        this.location = location;
     }
 
     public String getCategory() {
-        return mCategory;
+        return category;
     }
 
     public void setCategory(String category) {
-        mCategory = category;
-    }
-
-    public Location getLocation() {
-        return mLocation;
-    }
-
-    public void setLocation(Location location) {
-        mLocation = location;
+        this.category = category;
     }
 }

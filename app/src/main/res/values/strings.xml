@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">FlareApp</string>
-    <string name="show_map">Get me to the map</string>
+
+    <string name="featureServiceURL">https://services3.arcgis.com/TasUTTqc1Y9Gudyn/arcgis/rest/services/FeatureLocationLayer/FeatureServer</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="show_map">Show Map</string>
 </resources>

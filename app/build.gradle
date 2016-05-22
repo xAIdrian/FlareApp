@@ -31,4 +31,5 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:23.4.0'
+    compile 'com.google.android.gms:play-services:6.5.87'
 }

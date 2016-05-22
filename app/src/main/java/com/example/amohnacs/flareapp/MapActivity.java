@@ -12,14 +12,19 @@ import android.widget.Toast;
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.LocationDisplayManager;
 import com.esri.android.map.MapView;
+import com.esri.android.map.ags.ArcGISFeatureLayer;
 import com.esri.android.map.event.OnStatusChangedListener;
 import com.esri.core.geometry.Point;
 import com.esri.core.map.Graphic;
 import com.esri.core.symbol.SimpleMarkerSymbol;
 
+import java.util.List;
 import java.util.Random;
 
-public class MapActivity extends AppCompatActivity {
+public class MapActivity extends AppCompatActivity implements FeatureCallback{
+
+    private ArcGISFeatureLayer mFeatureLayer;
+    private FeatureLayerClass mFeature;
 
     public MapView mMapView;
     public LocationDisplayManager ldm;
@@ -29,9 +34,6 @@ public class MapActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
@@ -114,6 +116,12 @@ public class MapActivity extends AppCompatActivity {
             }
         });
 
+        //initialization of our FeatureLayer and its associated class
+        mFeatureLayer = new ArcGISFeatureLayer(Constants.mFeatureServiceURL, ArcGISFeatureLayer.MODE.ONDEMAND);
+        mFeature = new FeatureLayerClass(mMapView);
+        mFeature.getExistingPoints(this);
+        //mFeature.submitFlare(new Flare(new LatLng(200, 500), "UserOne", "Description", "Service"));
+
     }
     public static Location getNearbyRandomLocation(double x0, double y0, int radius) {
         Random random = new Random();
@@ -140,5 +148,13 @@ public class MapActivity extends AppCompatActivity {
         newLocation.setLatitude(foundLatitude);
 
         return newLocation;
+    }
+
+    @Override
+    public void setExistingFlares(List<Flare> flares) {
+
+        for(Flare flare : flares) {
+            //todo: set Marker on map using flare.getLocation()
+        }
     }
 }
