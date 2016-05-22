@@ -243,7 +243,6 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
         graphicsLayer = new GraphicsLayer();
         // Add empty GraphicsLayer
         mMapView.addLayer(graphicsLayer);
-
         mMapView.setOnStatusChangedListener(new OnStatusChangedListener() {
             @Override
             public void onStatusChanged(Object o, STATUS status) {
@@ -266,6 +265,8 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
                                 ldm.setShowLocation(true);
                                 ldm.setAutoPanMode(LocationDisplayManager.AutoPanMode.LOCATION);
                                 Log.d("SUNNY", "Location found....");
+
+
                                 //fireFlares();
                             }
                         }
@@ -326,8 +327,8 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
                 Graphic pointGraphic = new Graphic(pointGeometry, mYellowPictureMarkerSymbol);
                 // add the graphic to the graphics layer
                 graphicsLayer.addGraphic(pointGraphic);
-                mFeature.submitFlare(
-                        new Flare("Adrian", new LatLng(mLocation.getLongitude(), mLocation.getLatitude()), "Service"));
+//                mFeature.submitFlare(
+//                        new Flare("Adrian", new LatLng(mLocation.getLongitude(), mLocation.getLatitude()), "Service"));
             }
         });
 
@@ -396,6 +397,7 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
     @Override
     public void setExistingFlares(List<Flare> flares) {
 
+        
         for (Flare flare : flares) {
             Log.d("SUNNY-Top", "long: " + flare.getLocation().longitude + " lat: " + flare.getLocation().latitude);
             Graphic pointGraphic;
