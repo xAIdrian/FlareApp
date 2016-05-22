@@ -1,8 +1,6 @@
 package com.example.amohnacs.flareapp;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.Animatable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -14,19 +12,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.LocationDisplayManager;
@@ -73,7 +67,9 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
     private Animation closeAnim;
     AlertDialog.Builder builderSingle;
 
-    PictureMarkerSymbol mPictureMarkerSymbol;
+    PictureMarkerSymbol mRedPictureMarkerSymbol;
+    PictureMarkerSymbol mBluePictureMarkerSymbol;
+    PictureMarkerSymbol mYellowPictureMarkerSymbol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +82,11 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
         //getSupportActionBar().setHomeButtonEnabled(true);
 
 
-        mPictureMarkerSymbol = new PictureMarkerSymbol(getResources().getDrawable(R.drawable.pin));
+        mRedPictureMarkerSymbol = new PictureMarkerSymbol(getResources().getDrawable(R.drawable.red_pin));
+        mBluePictureMarkerSymbol = new PictureMarkerSymbol(getResources().getDrawable(R.drawable.blue_pin));
+        mYellowPictureMarkerSymbol = new PictureMarkerSymbol(getResources().getDrawable(R.drawable.yellow_pin));
+
+
         handler = new Handler();
         popAnim = AnimationUtils.loadAnimation(this, R.anim.pop);
         popSettleAnim = AnimationUtils.loadAnimation(this, R.anim.pop_settle);
@@ -260,7 +260,6 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
                             mLocation.setLongitude(location.getLongitude());
                             mLocation.setLatitude(location.getLatitude());
 
-
                             if (location != null) {
                                 Log.d("SUNNY", "lat: " + location.getLatitude() + " long: " + location.getLongitude());
                                 ldm.setShowLocation(true);
@@ -268,7 +267,6 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
                                 Log.d("SUNNY", "Location found....");
                                 //fireFlares();
                             }
-
                         }
 
                         @Override
@@ -314,9 +312,11 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
                 Point tempPoint = new Point(mLocation.getLongitude(), mLocation.getLatitude());
                 Point pointGeometry = (Point) GeometryEngine.project(tempPoint, SpatialReference.create(4326), SpatialReference.create(3857));
                 // create a graphic with the geometry and marker symbol
-                Graphic pointGraphic = new Graphic(pointGeometry, mPictureMarkerSymbol);
+                Graphic pointGraphic = new Graphic(pointGeometry, mYellowPictureMarkerSymbol);
                 // add the graphic to the graphics layer
                 graphicsLayer.addGraphic(pointGraphic);
+                mFeature.submitFlare(
+                        new Flare("Adrian", new LatLng(mLocation.getLongitude(), mLocation.getLatitude()), "Service"));
             }
         });
 
@@ -387,9 +387,16 @@ public class MapActivity extends AppCompatActivity implements FeatureCallback {
 
         for (Flare flare : flares) {
             Log.d("SUNNY-Top", "long: " + flare.getLocation().longitude + " lat: " + flare.getLocation().latitude);
+            Graphic pointGraphic;
             Point tempPoint = new Point(flare.getLocation().longitude, flare.getLocation().latitude);
             Point pointGeometry = (Point) GeometryEngine.project(tempPoint, SpatialReference.create(4326), SpatialReference.create(3857));
-            Graphic pointGraphic = new Graphic(pointGeometry, mPictureMarkerSymbol);
+            if (flare.getCategory() == "Service") {
+                pointGraphic = new Graphic(pointGeometry, mYellowPictureMarkerSymbol);
+            } else if (flare.getCategory() == "Emergency") {
+                pointGraphic = new Graphic(pointGeometry, mRedPictureMarkerSymbol);
+            } else {
+                pointGraphic = new Graphic(pointGeometry, mBluePictureMarkerSymbol);
+            }
             graphicsLayer.addGraphic(pointGraphic);
         }
     }
