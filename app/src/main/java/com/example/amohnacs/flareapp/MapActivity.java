@@ -1,14 +1,21 @@
 package com.example.amohnacs.flareapp;
 
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.LocationDisplayManager;
 import com.esri.android.map.MapView;
 import com.esri.android.map.event.OnStatusChangedListener;
+import com.esri.core.geometry.Point;
+import com.esri.core.map.Graphic;
+import com.esri.core.symbol.SimpleMarkerSymbol;
 
 import java.util.Random;
 
@@ -17,12 +24,22 @@ public class MapActivity extends AppCompatActivity {
     public MapView mMapView;
     public LocationDisplayManager ldm;
     public Location mLocation;
+    public ImageButton mImageButton;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
         mMapView = (MapView) findViewById(R.id.map);
+        // Create GraphicsLayer
+        final GraphicsLayer graphicsLayer = new GraphicsLayer();
+        // Add empty GraphicsLayer
+        mMapView.addLayer(graphicsLayer);
 
         mMapView.setOnStatusChangedListener(new OnStatusChangedListener() {
             @Override
@@ -74,6 +91,9 @@ public class MapActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
     }
     public static Location getNearbyRandomLocation(double x0, double y0, int radius) {
         Random random = new Random();

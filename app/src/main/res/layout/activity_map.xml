@@ -21,5 +21,13 @@
             mapoptions.ZoomLevel="12">
         </com.esri.android.map.MapView>
 
+        <ImageButton
+            android:src="@drawable/logo"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:id="@+id/flareButton"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
