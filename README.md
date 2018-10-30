@@ -11,3 +11,4 @@ Developed for AngelHack Washington DC 2016
   <img alt="View Flare on AngelHack's site"
        src="https://cloud.githubusercontent.com/assets/7444521/15524170/eb575a02-21ed-11e6-90e7-8436832c7e2f.png"/>
 </a>
+[click image for more details]
